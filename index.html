@@ -6,6 +6,17 @@
   <style>
     th, td {
       color: white;
+      border: 1px solid #ccc;
+      padding: 6px;
+    }
+    table {
+      border-collapse: collapse;
+    }
+    .black-bar {
+      background: black;
+      height: 5px;
+      padding: 0;
+      border: none;
     }
   </style>
 </head>
@@ -27,14 +38,17 @@
         tableHTML += "</tr></thead><tbody>";
 
         for (let i = 1; i < rows.length; i++) {
-          if (rows[i].every(cell => cell.trim() === "")) continue;
+          const row = rows[i];
+          const isBlackBar = row.every(cell => cell.trim() === "");
+
+          if (isBlackBar) {
+            tableHTML += `<tr><td class="black-bar" colspan="${rows[0].length}"></td></tr>`;
+            continue;
+          }
+
           tableHTML += "<tr>";
-          rows[i].forEach(cell => {
-            if (cell.trim().toLowerCase() === "separator") {
-              tableHTML += `<td colspan="${rows[0].length}" style="background:black;height:5px;"></td>`;
-            } else {
-              tableHTML += `<td>${cell}</td>`;
-            }
+          row.forEach(cell => {
+            tableHTML += `<td>${cell}</td>`;
           });
           tableHTML += "</tr>";
         }
